@@ -2,21 +2,19 @@
 
 ### Core Architecture
 - **Environment:** Mobile-first development (GitHub Web Interface).
-- **Hosting:** Render (Node.js Runtime).
+- **Hosting:** Render (Node.js Runtime - Port 10000).
 - **Database:** Supabase (PostgreSQL).
 - **Security:** Backend-as-a-Proxy (Frontend has NO direct DB access).
 
-### File Roles (Modular Setup)
-1. **package.json:** Tells Render which tools to install (Express, Supabase SDK).
-2. **supabaseClient.js:** The "Locked Door." It creates the secure connection using the `SERVICE_ROLE_KEY`.
-3. **server.js (The Brain):** - This is the entry point for Render.
-   - It listens for requests from the frontend.
-   - It uses `supabaseClient.js` to fetch data and sends it back to the user.
-   - **Crucial:** It handles the `PORT` and `CORS` so the app can be seen online.
+### Communication Protocol
+1. **Safety First:** Assistant MUST ask for the existing version of a file before providing an updated version.
+2. **File Paths:** All code blocks must start with a comment indicating the file path (e.g., // path: server.js).
+
+### File Roles
+1. **package.json:** Installation instructions for Render.
+2. **supabaseClient.js:** Secure Superuser connection to Supabase.
+3. **server.js:** The main API "Brain" that handles requests and Port 10000.
 
 ### Environment Variables (Set in Render)
-- `SUPABASE_URL`: Project API URL.
-- `SUPABASE_SERVICE_ROLE_KEY`: Superuser secret key.
-
-### Status
-Current goal is a modular, scalable Node backend where `server.js` acts as the middleman between the user and the Supabase tables.
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
