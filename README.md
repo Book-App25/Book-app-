@@ -1,18 +1,22 @@
 # Project Context: Book-App (Node + Supabase)
 
-### Architecture
+### Core Architecture
 - **Environment:** Mobile-first development (GitHub Web Interface).
 - **Hosting:** Render (Node.js Runtime).
 - **Database:** Supabase (PostgreSQL).
-- **Security Strategy:** Backend-as-a-Proxy. 
-  - Frontend has NO direct DB access.
-  - Backend uses `SUPABASE_SERVICE_ROLE_KEY` to bypass RLS.
-  - All communication is Modular (supabaseClient.js handles connection).
+- **Security:** Backend-as-a-Proxy (Frontend has NO direct DB access).
+
+### File Roles (Modular Setup)
+1. **package.json:** Tells Render which tools to install (Express, Supabase SDK).
+2. **supabaseClient.js:** The "Locked Door." It creates the secure connection using the `SERVICE_ROLE_KEY`.
+3. **server.js (The Brain):** - This is the entry point for Render.
+   - It listens for requests from the frontend.
+   - It uses `supabaseClient.js` to fetch data and sends it back to the user.
+   - **Crucial:** It handles the `PORT` and `CORS` so the app can be seen online.
 
 ### Environment Variables (Set in Render)
 - `SUPABASE_URL`: Project API URL.
 - `SUPABASE_SERVICE_ROLE_KEY`: Superuser secret key.
-- `PORT`: Managed by Render.
 
-### Current Goal
-Maintain a scalable, modular Node.js backend that serves data to a frontend while keeping the database hidden and secure.
+### Status
+Current goal is a modular, scalable Node backend where `server.js` acts as the middleman between the user and the Supabase tables.
