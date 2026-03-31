@@ -1,19 +1,17 @@
 // path: server.js
 const express = require('express');
 const cors = require('cors');
-const path = require('path'); // Added to handle file paths
+const path = require('path'); 
 const supabase = require('./supabaseClient');
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// 1. Tell the server to serve files from the "public" folder
-app.use(express.static(path.join(__dirname, 'public')));
+// 1. UPDATED: Tell the server to look at the ROOT directory for files
+app.use(express.static(__dirname));
 
-// API Route: Get data from a table
 app.get('/api/data', async (req, res) => {
     try {
         const { data, error } = await supabase
@@ -27,12 +25,11 @@ app.get('/api/data', async (req, res) => {
     }
 });
 
-// 2. Root route: This now sends the index.html file to the user
+// 2. UPDATED: Send the index.html from the ROOT directory
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Port configuration for Render (defaulting to 10000)
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
